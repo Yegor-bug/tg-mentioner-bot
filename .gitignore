@@ -1,0 +1,4 @@
+participants.sqlite3
+participants.sqlite3-*
+__pycache__/
+.env
