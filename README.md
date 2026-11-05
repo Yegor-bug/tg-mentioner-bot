@@ -1,28 +1,28 @@
-# Бот для `/all` в Telegram-группе
+# Telegram `/all` Bot
 
-Бот запоминает людей, которые пишут в группе или входят в неё, и по команде администратора `/all` упоминает их. Также понимает `@all`. Команду можно вызывать не чаще одного раза в 5 минут на группу.
+The bot keeps track of people who send messages in a group or join it. When a group administrator sends `/all`, the bot mentions the people it knows. It also accepts `@all`. The command can be used once every five minutes per group.
 
-## Подготовка
+## Setup
 
-1. Напишите [@BotFather](https://t.me/BotFather), отправьте `/newbot` и сохраните выданный токен. Никому его не пересылайте.
-2. Добавьте бота **администратором** в свою группу. Для работы нужны право публиковать сообщения и возможность получать изменения состава участников. Дополнительные права (удаление сообщений, блокировка людей и т. п.) ему не нужны.
-3. Установите Python 3.9 или новее. Сторонние пакеты не требуются.
+1. Message [@BotFather](https://t.me/BotFather), send `/newbot`, and save the token it gives you. Do not share the token with anyone.
+2. Add the bot to your group **as an administrator**. It needs permission to post messages and receive membership updates. It does not need permission to delete messages, ban users, or perform other administrative actions.
+3. Install Python 3.9 or newer. No third-party packages are required.
 
-## Запуск
+## Run
 
-В терминале из папки проекта:
+From the project directory, run these commands in a terminal:
 
 ```sh
-export TELEGRAM_BOT_TOKEN='токен_от_BotFather'
+export TELEGRAM_BOT_TOKEN='your_token_from_BotFather'
 python3 bot.py
 ```
 
-Пока процесс работает, бот отвечает в Telegram. Для постоянной работы запустите его на компьютере, который не выключается, или на VPS. Публичный адрес и HTTPS для этого варианта не нужны: бот использует long polling. Участники и состояние хранятся в локальном файле `participants.sqlite3` (путь можно изменить через `BOT_DB_PATH`). Для каждой базы запускайте только один экземпляр бота.
+The bot responds on Telegram while this process is running. To keep it available, run it on a computer that stays on or on a VPS. This version uses long polling, so it does not need a public address or an HTTPS endpoint. Participants and bot state are stored in the local `participants.sqlite3` file. You can change its location with `BOT_DB_PATH`. Run only one bot instance per database.
 
-## Использование
+## Usage
 
-Администратор группы отправляет `/all` или `@all`. Если в группе несколько ботов, можно отправить `/all@имя_этого_бота`. Упоминания отправляются порциями по 25 человек с паузой между сообщениями.
+A group administrator sends `/all` or `@all`. If the group has multiple bots, they can use `/all@your_bot_username`. Mentions are sent in batches of 25 people, with a pause between messages.
 
-**Ограничение Telegram:** Bot API не выдаёт полный список участников группы. Поэтому бот не сможет сразу упомянуть тех, кто состоял в группе до его добавления и с тех пор ничего не написал. Попросите таких людей отправить любое сообщение в группу. Если бот долго не работал и пропустил события выхода, локальный список может временно содержать ушедших участников.
+**Telegram limitation:** The Bot API does not provide a complete list of group members. The bot cannot immediately mention people who were already in the group before it was added and have not posted since. Ask those people to send any message to the group. If the bot is offline long enough to miss leave events, its local list may temporarily include people who have left.
 
-Если Telegram вернёт ошибку при отправке, она появится в терминале. Бот продолжит работу и обработает следующие команды; повторите `/all` через 5 минут, если рассылка прервалась.
+If Telegram returns an error while the bot is sending messages, the error appears in the terminal. The bot keeps running and processes later commands. If a mention run stops early, try `/all` again after five minutes.
